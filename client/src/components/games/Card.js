@@ -1,36 +1,27 @@
 import React, { PureComponent } from 'react'
 import ReactCardFlip from "react-card-flip";
 import './Card.css'
-import { isNullOrUndefined } from 'util';
 import cardsArray from './imagesDatabase'
 
-class Card extends PureComponent {
-
-
-    constructor() {
-        super();
-        this.state = {
-            isFlipped: false
-        };
-        this.handleClick = this.handleClick.bind(this);
+export class Card extends PureComponent {
+    state = {
+        isFlipped: false
     }
 
-    handleClick(e) {
+    handleClick = (e) => {
         e.preventDefault();
         this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
     }
 
     render() {
         const images = cardsArray.map(card => card.img)
-        console.log(images)
-        const randomImageIndex = Math.floor(Math.random() * 26)
-
         return (
-            <ReactCardFlip
-                isFlipped={this.state.isFlipped}>
+
+            < ReactCardFlip
+                isFlipped={this.state.isFlipped} >
                 <div key="front"
                 >
-                    <img className="cards" key={this.props.rowIndex}
+                    <img className="cards" key={this.props.picture}
                         // style={this.props.styles.image}
                         src={"/images/back.png"} onClick={this.handleClick}
                     />
@@ -40,13 +31,11 @@ class Card extends PureComponent {
                 >
                     <img className="cards"
                         // style={this.props.styles.image}
-                        src={images[randomImageIndex]} onClick={this.handleClick}
+                        src={images[this.props.picture]} onClick={this.handleClick}
                     />
                 </div>
-            </ReactCardFlip>
+            </ReactCardFlip >
 
         )
     }
 }
-
-export default Card

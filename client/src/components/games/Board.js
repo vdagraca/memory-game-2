@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react'
-import Card from "./Card"
+import  {Card}  from "./Card"
 import './Board.css'
 
 
 
 class Board extends PureComponent {
     render() {
+        console.log('this.props.board test:', this.props.board)
         return (
-            this.props.board.map(rowIndex => rowIndex.map(tile =>
-                tile = <div className="cards"><Card
-                    rowIndex={rowIndex}
-                /></div>
-            ))
+            this.props.board.map(row =>
+                <div className="cards">
+                    {row.map(picture => <Card picture={picture} />)}
+                </div>
+            )
         )
     }
 }

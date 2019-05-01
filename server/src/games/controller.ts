@@ -26,14 +26,16 @@ export default class GameController {
     @CurrentUser() user: User
   ) {
     const fullArray = randomize()
+    fullArray.unshift(0)
+    console.log('fullaray', fullArray)
 
-    const array1=fullArray.slice(0,7)
-    const array2=fullArray.slice(7,15)
-    const array3=fullArray.slice(15,23)
-    const array4=fullArray.slice(23,31)
-    const array5=fullArray.slice(31,39)
-    const array6=fullArray.slice(39,47)
-    const array7=fullArray.slice(47,55)
+    const array1 = fullArray.slice(0, 8)
+    const array2 = fullArray.slice(8, 16)
+    const array3 = fullArray.slice(16, 24)
+    const array4 = fullArray.slice(24, 32)
+    const array5 = fullArray.slice(32, 40)
+    const array6 = fullArray.slice(40, 48)
+    const array7 = fullArray.slice(48, 56)
 
     const newGame = new Game()
     newGame.board = [array1, array2, array3, array4, array5, array6, array7]
@@ -142,6 +144,6 @@ export default class GameController {
     return Game.find()
   }
 
-  
+
 
 }
