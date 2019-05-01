@@ -16,7 +16,9 @@ class Board extends PureComponent {
     }
 }
 
-
+// this.props.board.map(rowIndex =>
+//     rowIndex.map(tile => tile =
+//         <img key={rowIndex} src="/images/back.png" alt="backtile" className="cards" />))
 
 
 export default Board

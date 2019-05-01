@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import ReactCardFlip from "react-card-flip";
 import './Card.css'
 import { isNullOrUndefined } from 'util';
+import cardsArray from './imagesDatabase'
 
 class Card extends PureComponent {
 
@@ -20,6 +21,9 @@ class Card extends PureComponent {
     }
 
     render() {
+        const images = cardsArray.map(card => card.img)
+        console.log(images)
+        const randomImageIndex = Math.floor(Math.random() * 26)
 
         return (
             <ReactCardFlip
@@ -28,7 +32,7 @@ class Card extends PureComponent {
                 >
                     <img className="cards" key={this.props.rowIndex}
                         // style={this.props.styles.image}
-                        src="/images/back.png" onClick={this.handleClick}
+                        src={"/images/back.png"} onClick={this.handleClick}
                     />
                 </div>
                 <div key="back"
@@ -36,7 +40,7 @@ class Card extends PureComponent {
                 >
                     <img className="cards"
                         // style={this.props.styles.image}
-                        src="/images/b.png" onClick={this.handleClick}
+                        src={images[randomImageIndex]} onClick={this.handleClick}
                     />
                 </div>
             </ReactCardFlip>

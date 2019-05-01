@@ -7,6 +7,8 @@ import { userId } from '../../jwt'
 import Paper from '@material-ui/core/Paper'
 import Board from './Board'
 import './GameDetails.css'
+import Scoreboard from './Scoreboard';
+
 
 class GameDetails extends PureComponent {
 
@@ -49,6 +51,7 @@ class GameDetails extends PureComponent {
       <h1>Game #{game.id}</h1>
 
       <p>Status: {game.status}</p>
+      <div><Scoreboard /></div>
 
       {
         game.status === 'started' &&
