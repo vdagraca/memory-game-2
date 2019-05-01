@@ -129,4 +129,3 @@ export default class GameController {
     return Game.find()
   }
 }
-
