@@ -4,7 +4,7 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Board } from './entities'
-import { IsBoard, isValidTransition, calculateWinner, finished } from './logic'
+import { IsBoard, isValidTransition, calculateWinner, finished, randomize } from './logic'
 import { Validate } from 'class-validator'
 import { io } from '../index'
 
@@ -25,15 +25,28 @@ export default class GameController {
   async createGame(
     @CurrentUser() user: User
   ) {
-    const entity = await Game.create().save()
+    const fullArray = randomize()
+
+    const array1=fullArray.slice(0,7)
+    const array2=fullArray.slice(7,15)
+    const array3=fullArray.slice(15,23)
+    const array4=fullArray.slice(23,31)
+    const array5=fullArray.slice(31,39)
+    const array6=fullArray.slice(39,47)
+    const array7=fullArray.slice(47,55)
+
+    const newGame = new Game()
+    newGame.board = [array1, array2, array3, array4, array5, array6, array7]
+    await newGame.save()
+
 
     await Player.create({
-      game: entity,
+      game: newGame,
       user,
       symbol: 'x'
     }).save()
 
-    const game = await Game.findOneById(entity.id)
+    const game = await Game.findOneById(newGame.id)
 
     io.emit('action', {
       type: 'ADD_GAME',
@@ -128,4 +141,7 @@ export default class GameController {
   getGames() {
     return Game.find()
   }
+
+  
+
 }
