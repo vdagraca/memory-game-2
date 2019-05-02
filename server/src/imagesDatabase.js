@@ -140,3 +140,4 @@ const cardsArray = [
     img: 'images/joker2.png'
   }
 ]
+
