@@ -1,17 +1,14 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
 import User from '../users/entity'
 
-export type Symbol = 'x' | 'o'
-export type Row = [Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null]
-export type Board = [Row, Row, Row, Row, Row, Row, Row]
-export type FlippedRow = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean]
-export type FlippedBoard = [FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow]
+export type Row = number[]
+export type Board = Row[]
+export type FlippedRow = boolean[]
+export type FlippedBoard = FlippedRow[]
 
 type Status = 'pending' | 'started' | 'finished'
 const flipRow: FlippedRow = [false, false, false, false, false, false, false, false ]
 const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
-const emptyRow: Row = [null, null, null, null, null, null, null, null]
-const emptyBoard: Board = [emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -19,7 +16,7 @@ export class Game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column('json', { default: emptyBoard })
+  @Column('json')
   board: Board
 
   @Column('char', { length: 1, default: 'x' })

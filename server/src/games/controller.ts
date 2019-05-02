@@ -4,7 +4,7 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Board } from './entities'
-import { IsBoard, isValidTransition, calculateWinner, finished, randomize } from './logic'
+import { IsBoard, isValidTransition, calculateWinner, finished, fullArray } from './logic'
 import { Validate } from 'class-validator'
 import { io } from '../index'
 
@@ -17,9 +17,8 @@ export default class GameController {
   async createGame(
     @CurrentUser() user: User
   ) {
-    const fullArray = randomize()
-    console.log('fullaray', fullArray)
 
+    
     const array1 = fullArray.slice(0, 8)
     const array2 = fullArray.slice(8, 16)
     const array3 = fullArray.slice(16, 24)
@@ -85,10 +84,29 @@ export default class GameController {
   async updateGame(
     @CurrentUser() user: User,
     @Param('id') gameId: number,
-    @Body() pictureIndex: number
+    @Body() pictureId: number
   ) {
+    console.log('pictureId',pictureId)
+    
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
+
+    let targetRow, targetColumn
+    game
+      .board
+      .map((row, rowIndex) => {
+        row.map((id, columnIndex) => {
+          const isTarget = id === pictureId
+          
+          if (isTarget) {
+            targetRow = rowIndex
+            targetColumn = columnIndex
+          }
+        })
+      })
+    
+    console.log('targetRow test:', targetRow)
+    console.log('targetColumn test:', targetColumn)
 
     const player = await Player.findOne({ user, game })
 
@@ -96,20 +114,22 @@ export default class GameController {
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
 
-    console.log('pictureIndex', pictureIndex)
+    game.flipped[targetRow][targetColumn] = true
 
-    const winner = calculateWinner(update.board)
-    if (winner) {
-      game.winner = winner
-      game.status = 'finished'
-    }
-    else if (finished(update.board)) {
-      game.status = 'finished'
-    }
-    else {
-      game.turn = player.symbol === 'x' ? 'o' : 'x'
-    }
-    game.board = update.board
+    // const winner = calculateWinner(update.board)
+    // if (winner) {
+    //   game.winner = winner
+    //   game.status = 'finished'
+    // }
+    // else if (finished(update.board)) {
+    //   game.status = 'finished'
+    // }
+    // else {
+    //   game.turn = player.symbol === 'x' ? 'o' : 'x'
+    // }
+    // game.board = update.board
+
+    console.log('game.flipped test:', game.flipped)
     await game.save()
 
     io.emit('action', {

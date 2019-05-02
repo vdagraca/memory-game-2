@@ -74,8 +74,6 @@ export const updateGame = (gameId, pictureIndex) => (dispatch, getState) => {
 
   if (isExpired(jwt)) return dispatch(logout())
 
-  console.log('pictureIndex test:', pictureIndex)
-  console.log('typeof pictureIndex test:', typeof pictureIndex)
 
   request
     .patch(`${baseUrl}/games/${gameId}`)
