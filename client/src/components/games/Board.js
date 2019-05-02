@@ -51,12 +51,16 @@ class Board extends PureComponent {
     }
 
     render() {
-        console.log('this.props.board test:', this.props.board);
         return (
 
-            this.props.board.map(row =>
+            this.props.board.map((row, rowIndex) =>
                 <div className="cards">
-                    {row.map(picture => <Card picture={picture} values={this.values} />)}
+                    {row.map((picture, columnIndex) => <Card
+                        picture={picture}
+                        values={this.values}
+                        makeMove={this.props.makeMove}
+                        flipped={this.props.flipped[rowIndex][columnIndex]}
+                    />)}
                 </div>
             )
         )
