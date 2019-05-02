@@ -26,7 +26,6 @@ export default class GameController {
     @CurrentUser() user: User
   ) {
     const fullArray = randomize()
-    fullArray.unshift(0)
     console.log('fullaray', fullArray)
 
     const array1 = fullArray.slice(0, 8)
