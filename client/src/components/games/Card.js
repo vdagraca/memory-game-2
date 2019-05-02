@@ -12,7 +12,8 @@ export class Card extends PureComponent {
 
         this.state = {
             isFlipped: false,
-            card: this.props.picture
+            card: this.props.picture,
+            firstClick: null
         }
     }
 
@@ -20,18 +21,18 @@ export class Card extends PureComponent {
         console.log('e target!!!: ',e.target)
         e.preventDefault();
         // already flipped, can not flip again the same card
-        // if (this.state.isFlipped) {
-        //     console.log('already flipped');
-        //     return;
-        // }
+        if (this.state.isFlipped) {
+            console.log('already flipped');
+            return;
+        }
 
-        // console.log(this.props.picture);
-        // // can not flip more than 2 cards
-        // if (this.props.values.checkFunction({ card: this.props.picture })) {
-        // flip the card
-        this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
-        // this.props.values.flippingCard({ card: this.props.picture });
-        // }
+        console.log(this.props.picture);
+        // can not flip more than 2 cards
+        if (this.props.values.checkFunction({ card: this.props.picture })) {
+            // flip the card
+            this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
+            this.props.values.flippingCard({ card: this.props.picture });
+        }
 
         this.props.makeMove(this.props.picture)
     }
