@@ -27,18 +27,17 @@ class Board extends PureComponent {
 
         flippingCard: (args) => {
             let flippingCards = this.state.flippingCards + 1;
-            this.setState({ flippingCards: flippingCards });
+            this.setState({ flippingCards });
 
             if (flippingCards == 1) {
                 this.setState({ firstCard: args.card });
             }
             else if (flippingCards == 2) {
                 if (this.state.firstCard == args.card) {
+                    this.setState({ flippingCards: 0 })
                     console.log('right!', this.state.firstCard);
                 } else {
                     console.log('wrong!');
-                    // flip the cards
-                    // [...]
 
                     // next user
                     // [...]

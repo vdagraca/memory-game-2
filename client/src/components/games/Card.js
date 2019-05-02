@@ -9,7 +9,8 @@ export class Card extends PureComponent {
         super(props);
         this.state = {
             isFlipped: false,
-            card: this.props.picture
+            card: this.props.picture,
+            firstClick: null
         }
         console.log(props);
     }
@@ -24,7 +25,7 @@ export class Card extends PureComponent {
         // }
 
         // console.log(this.props.picture);
-        // // can not flip more than 2 cards
+        // can not flip more than 2 cards
         // if (this.props.values.checkFunction({ card: this.props.picture })) {
         // flip the card
         this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
