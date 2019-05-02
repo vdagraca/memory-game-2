@@ -1,4 +1,5 @@
 const cardsArray = [
+  { name: "empty" },
   {
     id: 1,
     name: 'A',
@@ -127,17 +128,17 @@ const cardsArray = [
   {
     id: 26,
     name: 'Z',
-    img: 'images/z.png'
+    img: '/images/z.png'
   },
   {
     id: 27,
-    name: 'joker1',
-    img: 'images/joker1.png'
+    name: 'Joker 1',
+    img: '/images/joker1.png'
   },
   {
     id: 28,
-    name: 'joker2',
-    img: 'images/joker2.png'
+    name: 'Joker 2',
+    img: '/images/joker2.png'
   }
 ]
 
