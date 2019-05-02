@@ -16,6 +16,7 @@ export class Card extends PureComponent {
 
     handleClick = (e) => {
         console.log('card.handleClick');
+        console.log('HELOOOOO',e.target)
         e.preventDefault();
         // already flipped, can not flip again the same card
         if (this.state.isFlipped) {
@@ -31,6 +32,9 @@ export class Card extends PureComponent {
             this.props.values.flippingCard({ card: this.props.picture });
         }
 
+        console.log('this.props.picture test:', this.props.picture)
+
+        this.props.makeMove(this.props.picture)
     }
 
     render() {

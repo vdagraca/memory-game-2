@@ -8,14 +8,6 @@ import { IsBoard, isValidTransition, calculateWinner, finished, randomize } from
 import { Validate } from 'class-validator'
 import { io } from '../index'
 
-class GameUpdate {
-
-  @Validate(IsBoard, {
-    message: 'Not a valid board'
-  })
-  board: Board
-}
-
 @JsonController()
 export default class GameController {
 
@@ -44,7 +36,7 @@ export default class GameController {
     await Player.create({
       game: newGame,
       user,
-      symbol: 'x'
+      symbol: 'x',
     }).save()
 
     const game = await Game.findOneById(newGame.id)
@@ -74,7 +66,7 @@ export default class GameController {
     const player = await Player.create({
       game,
       user,
-      symbol: 'o'
+      symbol: 'o',
     }).save()
 
     io.emit('action', {
@@ -93,7 +85,7 @@ export default class GameController {
   async updateGame(
     @CurrentUser() user: User,
     @Param('id') gameId: number,
-    @Body() update: GameUpdate
+    @Body() pictureIndex: number
   ) {
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
@@ -103,9 +95,8 @@ export default class GameController {
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board)) {
-      throw new BadRequestError(`Invalid move`)
-    }
+
+    console.log('pictureIndex', pictureIndex)
 
     const winner = calculateWinner(update.board)
     if (winner) {

@@ -4,9 +4,12 @@ import User from '../users/entity'
 export type Symbol = 'x' | 'o'
 export type Row = [Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null]
 export type Board = [Row, Row, Row, Row, Row, Row, Row]
+export type FlippedRow = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean]
+export type FlippedBoard = [FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow, FlippedRow]
 
 type Status = 'pending' | 'started' | 'finished'
-
+const flipRow: FlippedRow = [false, false, false, false, false, false, false, false ]
+const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
 const emptyRow: Row = [null, null, null, null, null, null, null, null]
 const emptyBoard: Board = [emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow]
 
@@ -27,6 +30,9 @@ export class Game extends BaseEntity {
 
   @Column('text', { default: 'pending' })
   status: Status
+
+  @Column('json', {default: flipBoard, nullable: true})
+  flipped: FlippedBoard
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
@@ -49,6 +55,12 @@ export class Player extends BaseEntity {
 
   @Column('char', { length: 1 })
   symbol: Symbol
+
+  @Column('simple-array', {default: []})
+  moves: number[]
+
+  @Column('simple-array', {default: []})
+  solved: number[]
 
   @Column('integer', { name: 'user_id' })
   userId: number

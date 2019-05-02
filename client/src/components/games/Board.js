@@ -56,7 +56,7 @@ class Board extends PureComponent {
 
             this.props.board.map(row =>
                 <div className="cards">
-                    {row.map(picture => <Card picture={picture} values={this.values} />)}
+                    {row.map(picture => <Card picture={picture} values={this.values} makeMove={this.props.makeMove} />)}
                 </div>
             )
         )
