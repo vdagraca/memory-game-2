@@ -21,15 +21,9 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
-  makeMove = (rowIndex) => {
-    const { game, updateGame } = this.props
-
-    const board = game.board
-    board[rowIndex].flipped = true
-
-    updateGame(game.id, board)
+  makeMove = (pictureIndex) => {
+    this.props.updateGame(this.props.game.id, pictureIndex)
   }
-
 
   render() {
     const { game, users, authenticated, userId } = this.props
@@ -51,7 +45,7 @@ class GameDetails extends PureComponent {
       <h1>Game #{game.id}</h1>
 
       <p>Status: {game.status}</p>
-      <div><Scoreboard /></div>
+      {/* <div><Scoreboard /></div> */}
 
       {
         game.status === 'started' &&
@@ -74,7 +68,11 @@ class GameDetails extends PureComponent {
 
       {
         game.status !== 'pending' &&
-        <Board board={game.board} makeMove={this.makeMove} />
+        <Board
+          board={game.board}
+          makeMove={this.makeMove}
+          flipped={game.flipped}
+        />
       }
     </Paper>)
   }

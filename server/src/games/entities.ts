@@ -1,14 +1,14 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
 import User from '../users/entity'
 
-export type Symbol = 'x' | 'o'
-export type Row = [Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null, Symbol | null]
-export type Board = [Row, Row, Row, Row, Row, Row, Row]
+export type Row = number[]
+export type Board = Row[]
+export type FlippedRow = boolean[]
+export type FlippedBoard = FlippedRow[]
 
 type Status = 'pending' | 'started' | 'finished'
-
-const emptyRow: Row = [null, null, null, null, null, null, null, null]
-const emptyBoard: Board = [emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow]
+const flipRow: FlippedRow = [false, false, false, false, false, false, false, false ]
+export const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -16,17 +16,20 @@ export class Game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column('json', { default: emptyBoard })
+  @Column('json')
   board: Board
-
-  @Column('char', { length: 1, default: 'x' })
-  turn: Symbol
 
   @Column('char', { length: 1, nullable: true })
   winner: Symbol
 
+  @Column('integer', { nullable: true })
+  first: number | null
+
   @Column('text', { default: 'pending' })
   status: Status
+
+  @Column('json', {default: flipBoard, nullable: true})
+  flipped: FlippedBoard
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
@@ -49,6 +52,12 @@ export class Player extends BaseEntity {
 
   @Column('char', { length: 1 })
   symbol: Symbol
+
+  @Column('simple-array', {default: []})
+  moves: number[]
+
+  @Column('simple-array', {default: []})
+  solved: number[]
 
   @Column('integer', { name: 'user_id' })
   userId: number
