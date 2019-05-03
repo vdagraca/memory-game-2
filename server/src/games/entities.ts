@@ -8,7 +8,7 @@ export type FlippedBoard = FlippedRow[]
 
 type Status = 'pending' | 'started' | 'finished'
 const flipRow: FlippedRow = [false, false, false, false, false, false, false, false ]
-const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
+export const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -19,11 +19,11 @@ export class Game extends BaseEntity {
   @Column('json')
   board: Board
 
-  @Column('char', { length: 1, default: 'x' })
-  turn: Symbol
-
   @Column('char', { length: 1, nullable: true })
   winner: Symbol
+
+  @Column('integer', { nullable: true })
+  first: number | null
 
   @Column('text', { default: 'pending' })
   status: Status

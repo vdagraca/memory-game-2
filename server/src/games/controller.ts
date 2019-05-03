@@ -3,10 +3,11 @@ import {
   Body, Patch
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Board } from './entities'
+import { Game, Player, Board, flipBoard } from './entities'
 import { IsBoard, isValidTransition, calculateWinner, finished, fullArray } from './logic'
 import { Validate } from 'class-validator'
 import { io } from '../index'
+import images from './imagesDatabase'
 
 @JsonController()
 export default class GameController {
@@ -27,25 +28,35 @@ export default class GameController {
     const array6 = fullArray.slice(40, 48)
     const array7 = fullArray.slice(48, 56)
 
-    const newGame = new Game()
-    newGame.board = [array1, array2, array3, array4, array5, array6, array7]
+    const game = new Game()
+    game.board = [array1, array2, array3, array4, array5, array6, array7]
+
+    await game.save()
+
+    await Player
+      .create({
+        game: game,
+        user,
+        symbol: 'x',
+      })
+      .save()
+
+    const newGame = await Game.findOneById(game.id)
+    if (!newGame) throw new BadRequestError(`Game does not exist`)
+
+    const randomRowIndex = Math.floor(Math.random() * newGame.flipped.length)
+    const randomRow = newGame.flipped[randomRowIndex]
+    const randomColumnIndex = Math.floor(Math.random() * randomRow.length)
+    randomRow[randomColumnIndex] = true
+
     await newGame.save()
-
-
-    await Player.create({
-      game: newGame,
-      user,
-      symbol: 'x',
-    }).save()
-
-    const game = await Game.findOneById(newGame.id)
 
     io.emit('action', {
       type: 'ADD_GAME',
-      payload: game
+      payload: newGame
     })
 
-    return game
+    return newGame
   }
 
   @Authorized()
@@ -91,6 +102,10 @@ export default class GameController {
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 
+    const player = await Player.findOne({ user, game })
+    if (!player) throw new ForbiddenError(`You are not part of this game`)
+    if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
+
     let targetRow, targetColumn
     game
       .board
@@ -107,27 +122,29 @@ export default class GameController {
     
     console.log('targetRow test:', targetRow)
     console.log('targetColumn test:', targetColumn)
-
-    const player = await Player.findOne({ user, game })
-
-    if (!player) throw new ForbiddenError(`You are not part of this game`)
-    if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
-    if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-
     game.flipped[targetRow][targetColumn] = true
 
-    // const winner = calculateWinner(update.board)
-    // if (winner) {
-    //   game.winner = winner
-    //   game.status = 'finished'
-    // }
-    // else if (finished(update.board)) {
-    //   game.status = 'finished'
-    // }
-    // else {
-    //   game.turn = player.symbol === 'x' ? 'o' : 'x'
-    // }
-    // game.board = update.board
+    const image: any = images.find(image => image.id === pictureId)
+    const { coupleId } = image
+    
+    if (game.first) {
+      if (coupleId !== game.first) {
+        game.flipped = game.flipped.map(row => {
+          return row.map(() => false)
+        })
+        console.log('game.flipped reset test:', game.flipped)
+        console.log('targetRow test:', targetRow)
+        const row = game.flipped[targetRow]
+        console.log('row test:', row)
+        console.log('targetColumn test:', targetColumn)
+        row[targetColumn] = true // Show only the last guessed card
+        console.log('game.flipped after test:', game.flipped)
+      }
+
+      game.first = null
+    } else {
+      game.first = coupleId
+    }
 
     console.log('game.flipped test:', game.flipped)
     await game.save()
