@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Card } from "./Card"
 import './Board.css'
+import cardsArray from './imagesDatabase';
 
 class Board extends PureComponent {
 
@@ -25,7 +26,12 @@ class Board extends PureComponent {
             }
         },
 
+
         flippingCard: (args) => {
+            const coupleId = cardsArray.map(card => card.coupleId)
+            console.log('coupleId', coupleId)
+
+
             let flippingCards = this.state.flippingCards + 1;
             this.setState({ flippingCards });
 
@@ -50,18 +56,27 @@ class Board extends PureComponent {
     }
 
     render() {
-        return (
+        console.log('board', this.props.board)
+        console.log('Board this.props.flipped test:', this.props.flipped)
 
-            this.props.board.map((row, rowIndex) =>
-                <div className="cards">
-                    {row.map((picture, columnIndex) => <Card
-                        picture={picture}
-                        values={this.values}
-                        makeMove={this.props.makeMove}
-                        flipped={this.props.flipped[rowIndex][columnIndex]}
-                    />)}
+        return (
+            this.props.board.map((row, rowIndex) => {
+                return <div className="cards">
+                    {
+                        row.map((picture, columnIndex) => {
+                            const flipped = this.props.flipped[rowIndex][columnIndex]
+                            console.log('flipped test:', flipped)
+                            
+                            return <Card
+                                picture={picture}
+                                values={this.values}
+                                makeMove={this.props.makeMove}
+                                flipped={flipped}
+                            />
+                        })
+                    }
                 </div>
-            )
+            })
         )
     }
 }

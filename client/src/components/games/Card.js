@@ -30,7 +30,6 @@ export class Card extends PureComponent {
         // can not flip more than 2 cards
         if (this.props.values.checkFunction({ card: this.props.picture })) {
             // flip the card
-            this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
             this.props.values.flippingCard({ card: this.props.picture });
         }
 
@@ -39,10 +38,11 @@ export class Card extends PureComponent {
 
     render() {
         const images = cardsArray.map(card => card.img)
+        console.log('this.props.isFlipped test:', this.props.flipped)
         return (
 
             < ReactCardFlip
-                isFlipped={this.state.isFlipped} >
+                isFlipped={this.props.flipped} >
                 <div key="front"
                 >
                     <img className="cards" key={this.props.picture}
