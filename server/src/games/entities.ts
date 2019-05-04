@@ -7,8 +7,8 @@ export type FlippedRow = boolean[]
 export type FlippedBoard = FlippedRow[]
 
 type Status = 'pending' | 'started' | 'finished'
-const flipRow: FlippedRow = [false, false, false, false, false, false, false, false ]
-export const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow, flipRow, flipRow, flipRow]
+const flipRow: FlippedRow = [false, false, false, false, false]
+export const flipBoard: FlippedBoard = [flipRow, flipRow, flipRow, flipRow]
 
 @Entity()
 export class Game extends BaseEntity {
@@ -28,7 +28,7 @@ export class Game extends BaseEntity {
   @Column('text', { default: 'pending' })
   status: Status
 
-  @Column('json', {default: flipBoard, nullable: true})
+  @Column('json', { default: flipBoard, nullable: true })
   flipped: FlippedBoard
 
   // this is a relation, read more about them here:
@@ -53,10 +53,10 @@ export class Player extends BaseEntity {
   @Column('char', { length: 1 })
   symbol: Symbol
 
-  @Column('simple-array', {default: []})
+  @Column('simple-array', { default: [] })
   moves: number[]
 
-  @Column('simple-array', {default: []})
+  @Column('simple-array', { default: [] })
   solved: number[]
 
   @Column('integer', { name: 'user_id' })

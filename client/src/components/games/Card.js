@@ -21,7 +21,7 @@ export class Card extends PureComponent {
         console.log('e target!!!: ', e.target)
         e.preventDefault();
         // already flipped, can not flip again the same card
-        
+
 
         console.log(this.props.picture);
         // can not flip more than 2 cards
@@ -35,7 +35,8 @@ export class Card extends PureComponent {
 
     render() {
         const images = cardsArray.map(card => card.img)
-        console.log('this.props.isFlipped test:', this.props.flipped)
+        console.log('images', images)
+        // console.log('this.props.isFlipped test:', this.props.flipped)
         return (
 
             < ReactCardFlip

@@ -20,17 +20,15 @@ export default class GameController {
   ) {
 
     const fullArray = randomize()
-    
-    const array1 = fullArray.slice(0, 8)
-    const array2 = fullArray.slice(8, 16)
-    const array3 = fullArray.slice(16, 24)
-    const array4 = fullArray.slice(24, 32)
-    const array5 = fullArray.slice(32, 40)
-    const array6 = fullArray.slice(40, 48)
-    const array7 = fullArray.slice(48, 56)
+
+    const array1 = fullArray.slice(0, 5)
+    const array2 = fullArray.slice(5, 10)
+    const array3 = fullArray.slice(10, 15)
+    const array4 = fullArray.slice(15, 20)
+
 
     const game = new Game()
-    game.board = [array1, array2, array3, array4, array5, array6, array7]
+    game.board = [array1, array2, array3, array4]
 
     await game.save()
 
@@ -98,8 +96,8 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() pictureId: number
   ) {
-    console.log('pictureId',pictureId)
-    
+    console.log('pictureId', pictureId)
+
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 
@@ -113,21 +111,21 @@ export default class GameController {
       .map((row, rowIndex) => {
         row.map((id, columnIndex) => {
           const isTarget = id === pictureId
-          
+
           if (isTarget) {
             targetRow = rowIndex
             targetColumn = columnIndex
           }
         })
       })
-    
+
     console.log('targetRow test:', targetRow)
     console.log('targetColumn test:', targetColumn)
     game.flipped[targetRow][targetColumn] = true
 
     const image: any = images.find(image => image.id === pictureId)
     const { coupleId } = image
-    
+
     if (game.first) {
       if (coupleId !== game.first) {
         game.flipped = game.flipped.map(row => {
@@ -138,7 +136,8 @@ export default class GameController {
         const row = game.flipped[targetRow]
         console.log('row test:', row)
         console.log('targetColumn test:', targetColumn)
-        row[targetColumn] = true // Show only the last guessed card
+        // row[targetColumn] = true 
+        // Show only the last guessed card
         console.log('game.flipped after test:', game.flipped)
       }
 
