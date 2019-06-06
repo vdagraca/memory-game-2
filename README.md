@@ -18,12 +18,15 @@ $ docker run \
 
 ### TypeStack Server
 Then `cd` into the `server` directory and run `npm install` to install the dependencies.
-The first time you run the server, comment out lines 53 and 54 of/server/src/games/entities.ts.After running successfully with no errors, uncomment those lines andrestart the server.
+The first time you run the server, comment out lines 62 and 63 of/server/src/games/entities.ts.After running successfully with no errors, uncomment those lines andrestart the server.
 
 Start the server with the `npm run dev`
 
 ### React Client
 
 Open another terminal session and `cd` into the `client` directory, then run `npm install` to install dependencies and run `npm start` to start the dev server.
+
+### Multiplayer
+Open a different browser for the second player to join the game.
 
 
