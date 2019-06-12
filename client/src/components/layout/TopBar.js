@@ -15,28 +15,28 @@ const TopBar = (props) => {
     <AppBar position="absolute" style={{ zIndex: 10 }}>
       <Toolbar style={{ backgroundColor: "#cc33ff" }}>
         <Typography variant="title" color="inherit" style={{ flex: 1, fontFamily: "Bubblegum Sans" }}>
-          <b>Barbapappa Memory </b>
+          <b>Barbapapa Memory </b>
         </Typography>
         {
           user &&
-          <Button color="inherit" style={{fontFamily: "Bubblegum Sans" }} ><AccountIcon /> {user.firstName}</Button>
+          <Button color="inherit" style={{ fontFamily: "Bubblegum Sans" }} ><AccountIcon /> {user.firstName}</Button>
         }
 
         {
           location.pathname.indexOf('signup') > 0 &&
-          <Button color="inherit" style={{fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/login')}>Login</Button>
+          <Button color="inherit" style={{ fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/login')}>Login</Button>
         }
         {
           location.pathname.indexOf('login') > 0 &&
-          <Button color="inherit" style={{fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/signup')}>Sign up</Button>
+          <Button color="inherit" style={{ fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/signup')}>Sign up</Button>
         }
         {
           location.pathname.indexOf('games/') > 0 &&
-          <Button color="inherit" style={{fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/games')}>All Games</Button>
+          <Button color="inherit" style={{ fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/games')}>All Games</Button>
         }
         {
           /games$/.test(location.pathname) &&
-          <Button color="inherit" style={{fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/logout')}>Log out</Button>
+          <Button color="inherit" style={{ fontFamily: "Bubblegum Sans" }} onClick={() => history.push('/logout')}>Log out</Button>
         }
       </Toolbar>
     </AppBar>
