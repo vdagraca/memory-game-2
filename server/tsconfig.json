@@ -13,7 +13,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "target": "es2017",
-    "types" : [
+    "types": [
       "node"
     ],
     "typeRoots": [
@@ -23,15 +23,18 @@
     "rootDir": "src/"
   },
   "include": [
-      "src/**/*"
+    "src/**/*"
   ],
   "exclude": [
-      "node_modules",
-      "**/*.spec.ts"
+    "node_modules",
+    "**/*.spec.ts"
   ],
   "typeRoots": [
     "@typesCustom",
     "node_modules/@types"
   ],
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  },
   "compileOnSave": true
 }
