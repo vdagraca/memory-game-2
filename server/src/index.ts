@@ -7,10 +7,10 @@ import GameController from './games/controller'
 import { verify } from './jwt'
 import User from './users/entity'
 import * as Koa from 'koa'
-import {Server} from 'http'
+import { Server } from 'http'
 import * as IO from 'socket.io'
 import * as socketIoJwtAuth from 'socketio-jwt-auth'
-import {secret} from './jwt'
+import { secret } from './jwt'
 
 const app = new Koa()
 const server = new Server(app.callback())
@@ -27,7 +27,7 @@ useKoaServer(app, {
   authorizationChecker: (action: Action) => {
     const header: string = action.request.headers.authorization
     if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
+      const [, token] = header.split(' ')
 
       try {
         return !!(token && verify(token))
@@ -42,10 +42,10 @@ useKoaServer(app, {
   currentUserChecker: async (action: Action) => {
     const header: string = action.request.headers.authorization
     if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
-      
+      const [, token] = header.split(' ')
+
       if (token) {
-        const {id} = verify(token)
+        const { id } = verify(token)
         return User.findOneById(id)
       }
     }
